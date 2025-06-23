@@ -50,7 +50,7 @@ Route::middleware(['auth', 'cekrole:admin,superadmin'])->group(function () {
 // ✅ Alumni-only routes
 Route::middleware(['auth', 'cekrole:alumni'])->group(function () {
     Route::get('/kuesioner', [KuesionerAlumni::class, 'index'])->name('tracer.kuesioner');
-    Route::post('/kuesioner/store', [KuesionerAlumni::class, 'create'])->name('tracer.create');
+    Route::post('/kuesioner/store', [KuesionerAlumni::class, 'store'])->name('tracer.create');
     Route::get('/kuesioner-pengguna', [TracerStudyController::class, 'index'])->name('tracer.kuesioner-pengguna');
     Route::post('/kuesioner-pengguna/store', [TracerStudyController::class, 'store'])->name('tracer.store');
     Route::get('/tracer-study/form/{id}', [TracerStudyController::class, 'showStudy'])->name('tracer.showstudy');

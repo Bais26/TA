@@ -8,8 +8,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="icon" type="image/png" sizes="192x192" href="assets/media/favicons/logo_phb.png">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 
     <style>
         body {
@@ -207,17 +205,14 @@
     @include('components.navbar')
 
     <body>
+        @if ($errors->has('error'))
+            <div class="alert alert-danger mt-3">
+                {{ $errors->first('error') }}
+            </div>
+        @endif
+
         <div class="container mt-2">
             <div class="questionnaire-container animate-fade-in">
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
                 <!-- Header -->
                 <div class="header-section">
                     <i class="fas fa-graduation-cap fa-3x mb-3"></i>
@@ -244,7 +239,7 @@
                                 Informasi Pribadi
                             </div>
                             <div class="section-body">
-                                <div class="row g-4">   
+                                <div class="row g-4">
                                     <div class="col-md-6">
                                         <label class="form-label">
                                             <i class="fas fa-id-card text-primary"></i>
@@ -303,350 +298,116 @@
                                     <i class="fas fa-question-circle text-primary"></i>
                                     Apakah Anda saat ini sedang bekerja?
                                 </label>
-                                @php
-                                    $statusList = [
-                                        '1' => 'Bekerja full time/part time',
-                                        '2' => 'Belum memungkinkan bekerja',
-                                        '3' => 'Wiraswasta',
-                                        '4' => 'Melanjutkan pendidikan',
-                                        '5' => 'Tidak kerja tetapi sedang mencari kerja',
-                                    ];
-                                @endphp
-
-                                @foreach ($statusList as $key => $label)
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="radio" name="status_pekerjaan"
-                                            value="{{ $key }}" id="status{{ $key }}" required>
-                                        <label class="form-check-label" for="status{{ $key }}">
-                                            {{ $label }}
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" name="bekerja" value="ya" id="bekerja_ya"
+                                            class="form-check-input" required>
+                                        <label for="bekerja_ya" class="form-check-label">
+                                            <i class="fas fa-check-circle text-success"></i>
+                                            Ya, saya bekerja
                                         </label>
                                     </div>
-                                @endforeach
-                            </div>
-
-                            <!-- Tambahan jika sedang mencari kerja -->
-                            <div class="section-card animate-fade-in" id="detailCariKerja" style="display: none;">
-                                <div class="section-header">
-                                    <i class="fas fa-search"></i>
-                                    Detail Pencarian Kerja
-                                </div>
-                                <div class="section-body">
-                                    <div class="row g-4">
-                                        <div class="col-md-6">
-                                            <label class="form-label">
-                                                <i class="fas fa-briefcase text-primary"></i>
-                                                Mencari kerja melalui
-                                            </label>
-                                            <input type="text" name="cara_mencari_kerja" class="form-control"
-                                                placeholder="Job portal, media sosial, relasi...">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">
-                                                <i class="fas fa-building text-primary"></i>
-                                                Jumlah lamaran
-                                            </label>
-                                            <input type="number" name="jumlah_lamaran" class="form-control"
-                                                min="0">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">
-                                                <i class="fas fa-phone text-primary"></i>
-                                                Jumlah panggilan
-                                            </label>
-                                            <input type="number" name="jumlah_panggilan" class="form-control"
-                                                min="0">
-                                        </div>
+                                    <div class="radio-option">
+                                        <input type="radio" name="bekerja" value="tidak" id="bekerja_tidak"
+                                            class="form-check-input">
+                                        <label for="bekerja_tidak" class="form-check-label">
+                                            <i class="fas fa-times-circle text-danger"></i>
+                                            Tidak bekerja
+                                        </label>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-
-                            <!-- Detail Pekerjaan -->
-                            <div class="section-card animate-fade-in" id="detailPekerjaan" style="display: none;">
-                                <div class="section-header">
-                                    <i class="fas fa-building"></i>
-                                    Detail Pekerjaan
-                                </div>
-                                <div class="section-body">
-                                    <div class="row g-4">
-                                        <div class="col-md-6">
-                                            <label class="form-label">
-                                                <i class="fas fa-building text-primary"></i>
-                                                Nama Perusahaan
-                                            </label>
-                                            <input type="text" name="nama_perusahaan" class="form-control"
-                                                placeholder="PT. Contoh Perusahaan">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">
-                                                <i class="fas fa-user-tie text-primary"></i>
-                                                Jabatan
-                                            </label>
-                                            <input type="text" name="jabatan" class="form-control"
-                                                placeholder="Software Developer">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">
-                                                <i class="fas fa-map-marker-alt text-primary"></i>
-                                                Lokasi Pekerjaan
-                                            </label>
-                                            <input type="text" name="alamat_pekerjaan" class="form-control"
-                                                placeholder="Jakarta, Indonesia">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">
-                                                <i class="fas fa-money-bill-wave text-primary"></i>
-                                                Gaji Pertama
-                                            </label>
-                                            <input type="text" name="gaji" class="form-control"
-                                                placeholder="Rp 5.000.000">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Integritas</label>
-                                            <select name="integritas" class="form-select" required>
-                                                <option value="" disabled selected>-- Pilih Level --</option>
-                                                <option value="sangat_baik">Sangat Baik</option>
-                                                <option value="baik">Baik</option>
-                                                <option value="cukup">Cukup</option>
-                                                <option value="kurang_baik">Kurang Baik</option>
-                                                <option value="tidak_baik">Tidak Baik</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Keahlian</label>
-                                            <select name="keahlian" class="form-select" required>
-                                                <option value="" disabled selected>-- Pilih Level --</option>
-                                                <option value="sangat_baik">Sangat Baik</option>
-                                                <option value="baik">Baik</option>
-                                                <option value="cukup">Cukup</option>
-                                                <option value="kurang_baik">Kurang Baik</option>
-                                                <option value="tidak_baik">Tidak Baik</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Kemampuan</label>
-                                            <select name="kemampuan" class="form-select" required>
-                                                <option value="" disabled selected>-- Pilih Level --</option>
-                                                <option value="sangat_baik">Sangat Baik</option>
-                                                <option value="baik">Baik</option>
-                                                <option value="cukup">Cukup</option>
-                                                <option value="kurang_baik">Kurang Baik</option>
-                                                <option value="tidak_baik">Tidak Baik</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Penguasaan</label>
-                                            <select name="penguasaan" class="form-select" required>
-                                                <option value="" disabled selected>-- Pilih Level --</option>
-                                                <option value="sangat_baik">Sangat Baik</option>
-                                                <option value="baik">Baik</option>
-                                                <option value="cukup">Cukup</option>
-                                                <option value="kurang_baik">Kurang Baik</option>
-                                                <option value="tidak_baik">Tidak Baik</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Komunikasi</label>
-                                            <select name="komunikasi" class="form-select" required>
-                                                <option value="" disabled selected>-- Pilih Level --</option>
-                                                <option value="sangat_baik">Sangat Baik</option>
-                                                <option value="baik">Baik</option>
-                                                <option value="cukup">Cukup</option>
-                                                <option value="kurang_baik">Kurang Baik</option>
-                                                <option value="tidak_baik">Tidak Baik</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Kerja Tim</label>
-                                            <select name="kerja_tim" class="form-select" required>
-                                                <option value="" disabled selected>-- Pilih Level --</option>
-                                                <option value="sangat_baik">Sangat Baik</option>
-                                                <option value="baik">Baik</option>
-                                                <option value="cukup">Cukup</option>
-                                                <option value="kurang_baik">Kurang Baik</option>
-                                                <option value="tidak_baik">Tidak Baik</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Pengembangan</label>
-                                            <select name="pengembangan" class="form-select" required>
-                                                <option value="" disabled selected>-- Pilih Level --</option>
-                                                <option value="sangat_baik">Sangat Baik</option>
-                                                <option value="baik">Baik</option>
-                                                <option value="cukup">Cukup</option>
-                                                <option value="kurang_baik">Kurang Baik</option>
-                                                <option value="tidak_baik">Tidak Baik</option>
-                                            </select>
-                                        </div>
+                        <!-- Detail Pekerjaan -->
+                        <div class="section-card animate-fade-in" id="detailPekerjaan" style="display: none;">
+                            <div class="section-header">
+                                <i class="fas fa-building"></i>
+                                Detail Pekerjaan
+                            </div>
+                            <div class="section-body">
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label">
+                                            <i class="fas fa-building text-primary"></i>
+                                            Nama Perusahaan
+                                        </label>
+                                        <input type="text" name="nama_perusahaan" class="form-control"
+                                            placeholder="PT. Contoh Perusahaan">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">
+                                            <i class="fas fa-user-tie text-primary"></i>
+                                            Jabatan
+                                        </label>
+                                        <input type="text" name="jabatan" class="form-control"
+                                            placeholder="Software Developer">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">
+                                            <i class="fas fa-map-marker-alt text-primary"></i>
+                                            Lokasi Pekerjaan
+                                        </label>
+                                        <input type="text" name="alamat_pekerjaan" class="form-control"
+                                            placeholder="Jakarta, Indonesia">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">
+                                            <i class="fas fa-money-bill-wave text-primary"></i>
+                                            Gaji Pertama
+                                        </label>
+                                        <input type="text" name="gaji" class="form-control"
+                                            placeholder="Rp 5.000.000">
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-
-                            {{-- Belum Bekerja --}}
-                            <div class="section-card animate-fade-in" id="belumkerja" style="display: none;">
-                                <div class="section-header">
-                                    <i class="fas fa-building"></i>
-                                    Pertanyaan
-                                </div>
-                                <div class="section-body">
-                                    <div class="row g-4">
-                                        <div class="col-md-6">
-                                            <label class="form-label">
-                                                <i class="fas fa-building text-primary"></i>
-                                                Alasan tidak bekerja?
-                                            </label>
-                                            <input type="text" name="alasan_tidak_bekerja" class="form-control"
-                                                placeholder="Example: Malas">
-                                        </div>
-                                        <div class="section-body">
-                                            <label class="form-label mb-3">
-                                                <i class="fas fa-book text-primary"></i>
-                                                Apakah ada rencana untuk cari kerja?
-                                            </label>
-                                            <select name="rencana_cari_kerja" class="form-select">
-                                                <option value="" disabled selected>-- Pilih Jawaban --</option>
-                                                <option value="tidak">Tidak</option>
-                                                <option value="ya_ada_rencana">Ya, Ada Rencana Untuk Mencari Kerja</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
+                        <!-- Evaluasi Pendidikan -->
+                        <div class="section-card animate-fade-in">
+                            <div class="section-header">
+                                <i class="fas fa-star"></i>
+                                Evaluasi Pendidikan
                             </div>
-
-                            <!-- Detail Wiraswasta -->
-                            <div class="section-card animate-fade-in" id="detailWiraswasta" style="display: none;">
-                                <div class="section-header">
-                                    <i class="fas fa-building"></i>
-                                    Detail Wiraswasta
-                                </div>
-                                <div class="section-body">
-                                    <div class="row g-4">
-                                        <div class="col-md-6">
-                                            <label class="form-label">
-                                                <i class="fas fa-building text-primary"></i>
-                                                Nama Usaha
-                                            </label>
-                                            <input type="text" name="nama_usaha" class="form-control"
-                                                placeholder="Warmad memble">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">
-                                                <i class="fas fa-user-tie text-primary"></i>
-                                                Bidang Usaha
-                                            </label>
-                                            <input type="text" name="bidang_usaha" class="form-control"
-                                                placeholder="UMKM">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">
-                                                <i class="fas fa-map-marker-alt text-primary"></i>
-                                                Alamat Usaha
-                                            </label>
-                                            <input type="text" name="alamat_usaha" class="form-control"
-                                                placeholder="Jakarta, Indonesia">
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="section-body">
+                                <label class="form-label mb-3">
+                                    <i class="fas fa-book text-primary"></i>
+                                    Apakah kurikulum kampus relevan dengan pekerjaan Anda sekarang?
+                                </label>
+                                <select name="relevansi_kurikulum" class="form-select" required>
+                                    <option value="" disabled selected>-- Pilih tingkat relevansi --</option>
+                                    <option value="sangat_relevan">⭐⭐⭐⭐⭐ Sangat Relevan</option>
+                                    <option value="relevan">⭐⭐⭐⭐ Relevan</option>
+                                    <option value="cukup">⭐⭐⭐ Cukup Relevan</option>
+                                    <option value="tidak_relevan">⭐⭐ Kurang Relevan</option>
+                                    <option value="sangat_tidak_relevan">⭐ Tidak Relevan</option>
+                                </select>
                             </div>
+                        </div>
 
-                            <!-- Detail Pendidikan -->
-                            <div class="section-card animate-fade-in" id="detailPendidikan" style="display: none;">
-                                <div class="section-header">
-                                    <i class="fas fa-building"></i>
-                                    Detail Pendidikan
-                                </div>
-                                <div class="section-body">
-                                    <div class="row g-4">
-                                        <div class="col-md-6">
-                                            <label class="form-label">
-                                                <i class="fas fa-building text-primary"></i>
-                                                Nama Instansi
-                                            </label>
-                                            <input type="text" name="nama_instansi" class="form-control"
-                                                placeholder="Warmad memble">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">
-                                                <i class="fas fa-user-tie text-primary"></i>
-                                                Jurusan
-                                            </label>
-                                            <input type="text" name="jurusan" class="form-control"
-                                                placeholder="UMKM">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">
-                                                <i class="fas fa-user-tie text-primary"></i>
-                                                Jenjang
-                                            </label>
-                                            <input type="text" name="jenjang" class="form-control"
-                                                placeholder="UMKM">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">
-                                                <i class="fas fa-calendar text-primary"></i>
-                                                Tahun Masuk
-                                            </label>
-                                            <input type="number" name="tahun_masuk" class="form-control"
-                                                placeholder="2023" min="2000" max="2024" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">
-                                                <i class="fas fa-map-marker-alt text-primary"></i>
-                                                Alamat Instansi
-                                            </label>
-                                            <input type="text" name="alamat_instansi" class="form-control"
-                                                placeholder="Jakarta, Indonesia">
-                                        </div>
-                                    </div>
-                                </div>
+                        <!-- Saran -->
+                        <div class="section-card animate-fade-in">
+                            <div class="section-header">
+                                <i class="fas fa-comments"></i>
+                                Saran dan Masukan
                             </div>
+                            <div class="section-body">
+                                <label class="form-label mb-3">
+                                    <i class="fas fa-edit text-primary"></i>
+                                    Berikan saran atau kritik untuk perbaikan kurikulum dan fasilitas kampus
+                                </label>
+                                <textarea name="saran" rows="5" class="form-control"
+                                    placeholder="Tulis saran, kritik, atau masukan Anda di sini untuk membantu kampus menjadi lebih baik..."></textarea>
+                            </div>
+                        </div>
 
-                            <!-- Evaluasi Pendidikan -->
-                            <div class="section-card animate-fade-in">
-                                <div class="section-header">
-                                    <i class="fas fa-star"></i>
-                                    Evaluasi Pendidikan
-                                </div>
-                                <div class="section-body">
-                                    <label class="form-label mb-3">
-                                        <i class="fas fa-book text-primary"></i>
-                                        Apakah kurikulum kampus relevan dengan pekerjaan Anda sekarang?
-                                    </label>
-                                    <select name="relevansi_kurikulum" class="form-select" required>
-                                        <option value="" disabled selected>-- Pilih tingkat relevansi --</option>
-                                        <option value="sangat_relevan">⭐⭐⭐⭐⭐ Sangat Relevan</option>
-                                        <option value="relevan">⭐⭐⭐⭐ Relevan</option>
-                                        <option value="cukup">⭐⭐⭐ Cukup Relevan</option>
-                                        <option value="tidak_relevan">⭐⭐ Kurang Relevan</option>
-                                        <option value="sangat_tidak_relevan">⭐ Tidak Relevan</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Saran -->
-                            <div class="section-card animate-fade-in">
-                                <div class="section-header">
-                                    <i class="fas fa-comments"></i>
-                                    Saran dan Masukan
-                                </div>
-                                <div class="section-body">
-                                    <label class="form-label mb-3">
-                                        <i class="fas fa-edit text-primary"></i>
-                                        Berikan saran atau kritik untuk perbaikan kurikulum dan fasilitas kampus
-                                    </label>
-                                    <textarea name="saran" rows="5" class="form-control"
-                                        placeholder="Tulis saran, kritik, atau masukan Anda di sini untuk membantu kampus menjadi lebih baik..."></textarea>
-                                </div>
-                            </div>
-
-                            <!-- Tombol Kirim -->
-                            <div class="text-center mb-4">
-                                <button type="submit" class="btn btn-submit">
-                                    <i class="fas fa-paper-plane me-2"></i>
-                                    Kirim Kuesioner
-                                </button>
-                            </div>
+                        <!-- Tombol Kirim -->
+                        <div class="text-center mb-4">
+                            <button type="submit" class="btn btn-submit">
+                                <i class="fas fa-paper-plane me-2"></i>
+                                Kirim Kuesioner
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -674,72 +435,23 @@
                 document.getElementById('progressBar').style.width = progress + '%';
                 document.getElementById('progressText').textContent = Math.round(progress) + '%';
             }
-            // next q
-            document.querySelectorAll('input[name="status_pekerjaan"]').forEach(radio => {
+
+            // Show/hide job details based on employment status
+            document.querySelectorAll('input[name="bekerja"]').forEach(radio => {
                 radio.addEventListener('change', function() {
-                    const pekerjaan = document.getElementById('detailPekerjaan');
-                    const cariKerja = document.getElementById('detailCariKerja');
-                    const belumkerja = document.getElementById('belumkerja');
-                    const wiraswasta = document.getElementById('detailWiraswasta');
-                    const pendidikan = document.getElementById('detailPendidikan');
-
-                    // Hide all sections first
-                    pekerjaan.style.display = 'none';
-                    cariKerja.style.display = 'none';
-                    belumkerja.style.display = 'none';
-                    wiraswasta.style.display = 'none';
-                    pendidikan.style.display = 'none';
-
-                    // Remove required attributes from all conditional fields
-                    document.querySelectorAll(
-                        '#detailPekerjaan select[required], #detailPekerjaan input[required], #detailCariKerja input[required], #belumkerja input[required], #detailWiraswasta input[required], #detailPendidikan input[required]'
-                        ).forEach(el => {
-                        el.removeAttribute('required');
-                    });
-
-                    // Show the relevant section and set required fields
-                    if (this.value === '1') {
-                        pekerjaan.style.display = 'block';
-                        pekerjaan.querySelectorAll('select, input').forEach(el => {
-                            if (el.name === 'nama_perusahaan' || el.name === 'jabatan' ||
-                                el.name === 'alamat_pekerjaan' || el.name === 'gaji' ||
-                                el.tagName === 'SELECT') {
-                                el.setAttribute('required', 'required');
-                            }
+                    const detailPekerjaan = document.getElementById('detailPekerjaan');
+                    if (this.value === 'ya') {
+                        detailPekerjaan.style.display = 'block';
+                        detailPekerjaan.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'nearest'
                         });
-                    } else if (this.value === '2') {
-                        belumkerja.style.display = 'block';
-                        belumkerja.querySelectorAll('input, select').forEach(el => {
-                            el.setAttribute('required', 'required');
-                        });
-                    } else if (this.value === '3') {
-                        wiraswasta.style.display = 'block';
-                        wiraswasta.querySelectorAll('input').forEach(el => {
-                            el.setAttribute('required', 'required');
-                        });
-                    } else if (this.value === '4') {
-                        pendidikan.style.display = 'block';
-                        pendidikan.querySelectorAll('input').forEach(el => {
-                            el.setAttribute('required', 'required');
-                        });
-                    } else if (this.value === '5') {
-                        cariKerja.style.display = 'block';
-                        cariKerja.querySelectorAll('input').forEach(el => {
-                            el.setAttribute('required', 'required');
-                        });
+                    } else {
+                        detailPekerjaan.style.display = 'none';
                     }
-
-                    // Update progress after changing sections
                     updateProgress();
                 });
             });
-
-            // Form submission handling
-            document.getElementById('alumniForm').addEventListener('submit', function(e) {
-                // Your existing validation logic
-                updateProgress();
-            });
-
 
             // Update progress on input change
             document.addEventListener('input', updateProgress);
@@ -751,26 +463,7 @@
             // Initialize progress
             updateProgress();
         </script>
-@endsection
-<script>
-    @if(session('success'))
-        Swal.fire({
-            icon: 'success',
-            title: 'Berhasil!',
-            text: '{{ session('success') }}',
-            confirmButtonText: 'OK'
-        });
-    @endif
-
-    @if(session('error'))
-        Swal.fire({
-            icon: 'error',
-            title: 'Gagal!',
-            text: '{{ session('error') }}',
-            confirmButtonText: 'Coba Lagi'
-        });
-    @endif
-</script>
     </body>
+@endsection
 
 </html>
