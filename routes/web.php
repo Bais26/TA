@@ -40,6 +40,8 @@ Route::middleware(['auth', 'cekrole:admin,superadmin'])->group(function () {
     Route::get('/listmahasiswa', fn() => view('mahasiswa.table-mahasiswa'));
     Route::get('/listdosen', fn() => view('dosen.table-dosen'));
     Route::get('/listalumni', fn() => view('alumni.table-alumni'));
+    Route::get('/listhasiltracer', fn() => view('tracer.hasil'));
+    
     // Route::get('/listtraceralumni', [TracerAlumniController::class, 'index'])->name('tracer.index');
     Route::get('/api/mahasiswa', [MahasiswaController::class, 'getData'])->name('api.mahasiswa');
     Route::get('/api/alumni', [TracerAlumniController::class, 'getData'])->name('api.alumni');

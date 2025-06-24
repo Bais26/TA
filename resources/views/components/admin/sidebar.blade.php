@@ -42,20 +42,7 @@
                     </a>
                 </li>
                 <li class="nav-main-heading">Kemahasiswaan</li>
-                <li class="nav-main-item">
-                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
-                        aria-expanded="false" href="#">
-                        <i class="nav-main-link-icon si si-graduation "></i>
-                        <span class="nav-main-link-name">Akademik</span>
-                    </a>
-                    <ul class="nav-main-submenu">
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="be_blocks_options.html">
-                                <span class="nav-main-link-name">Kelas</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+
                 <li class="nav-main-item">
                     <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
                         aria-expanded="false" href="#">
@@ -80,35 +67,6 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-main-item">
-                    <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
-                        aria-expanded="false" href="#">
-                        <i class="nav-main-link-icon far fa-newspaper"></i>
-                        <span class="nav-main-link-name">Kemahasiswaan</span>
-                    </a>
-                    <ul class="nav-main-submenu">
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="be_tables_styles.html">
-                                <span class="nav-main-link-name">Persetujuan KRS</span>
-                            </a>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="be_tables_responsive.html">
-                                <span class="nav-main-link-name">Keaktifkan Mahasiswa</span>
-                            </a>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="be_tables_helpers.html">
-                                <span class="nav-main-link-name">Monitoring IPK</span>
-                            </a>
-                        </li>
-                        <li class="nav-main-item">
-                            <a class="nav-main-link" href="be_tables_datatables.html">
-                                <span class="nav-main-link-name">Bimbingan Prasidang</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
 
 
                 <li class="nav-main-heading">KELOLA TRACER </li>
@@ -127,6 +85,11 @@
                         <li class="nav-main-item">
                             <a class="nav-main-link" href="listtracerpengguna">
                                 <span class="nav-main-link-name">Pengguna</span>
+                            </a>
+                        </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="listhasiltracer">
+                                <span class="nav-main-link-name">Hasil</span>
                             </a>
                         </li>
                     </ul>

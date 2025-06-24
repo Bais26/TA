@@ -308,6 +308,14 @@
                                         </label>
                                     </div>
                                     <div class="radio-option">
+                                        <input type="radio" name="bekerja" value="wirausaha" id="bekerja_wirausaha"
+                                            class="form-check-input">
+                                        <label for="bekerja_wirausaha" class="form-check-label">
+                                            <i class="fas fa-store text-warning"></i>
+                                            Wirausaha
+                                        </label>
+                                    </div>
+                                    <div class="radio-option">
                                         <input type="radio" name="bekerja" value="tidak" id="bekerja_tidak"
                                             class="form-check-input">
                                         <label for="bekerja_tidak" class="form-check-label">
@@ -318,6 +326,71 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Detail Wirausaha -->
+                        <div class="section-card animate-fade-in" id="detailWirausaha" style="display: none;">
+                            <div class="section-header">
+                                <i class="fas fa-store"></i>
+                                Detail Wirausaha
+                            </div>
+                            <div class="section-body">
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label">
+                                            <i class="fas fa-building text-primary"></i>
+                                            Nama Usaha
+                                        </label>
+                                        <input type="text" name="nama_usaha" class="form-control"
+                                            placeholder="Contoh: Warung Kopi Digital">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">
+                                            <i class="fas fa-user-tie text-primary"></i>
+                                            Posisi/Jabatan
+                                        </label>
+                                        <select name="posisi_usaha" class="form-select">
+                                            <option value="" disabled selected>-- Pilih posisi --</option>
+                                            <option value="founder">Founder</option>
+                                            <option value="co-founder">Co-Founder</option>
+                                            <option value="staff">Staff</option>
+                                            <option value="freelance">Freelance</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">
+                                            <i class="fas fa-globe text-primary"></i>
+                                            Tingkat Tempat Usaha
+                                        </label>
+                                        <select name="tingkat_usaha" class="form-select">
+                                            <option value="" disabled selected>-- Pilih tingkat --</option>
+                                            <option value="lokal">Lokal</option>
+                                            <option value="nasional">Nasional</option>
+                                            <option value="internasional">Internasional</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">
+                                            <i class="fa-solid fa-money-bill-wave text-primary"></i>
+                                            Rata-rata Pendapatan
+                                        </label>
+                                        <select name="tingkat_usaha" class="form-select">
+                                            <option value="" disabled selected>-- Pilih pendapatan --</option>
+                                            <option value="lokal">0 - 2 juta</option>
+                                            <option value="nasional">> 2 - 4 juta</option>
+                                            <option value="internasional">> 4 juta</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">
+                                            <i class="fas fa-map-marker-alt text-primary"></i>
+                                            Alamat Tempat Usaha
+                                        </label>
+                                        <input type="text" name="alamat_usaha" class="form-control"
+                                            placeholder="Alamat lengkap usaha">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
 
                         <!-- Detail Pekerjaan -->
                         <div class="section-card animate-fade-in" id="detailPekerjaan" style="display: none;">
@@ -358,6 +431,84 @@
                                         </label>
                                         <input type="text" name="gaji" class="form-control"
                                             placeholder="Rp 5.000.000">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section-card">
+                            <div class="section-header">
+                                <i class="fas fa-star"></i>
+                                Survey Kompetensi Lulusan
+                            </div>
+                            <div class="section-body">
+                                <label class="form-label">Penilaian Kompetensi</label>
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Etika</label>
+                                        <select name="etika" class="form-select" required>
+                                            <option value="" disabled selected>-- Pilih Level --</option>
+                                            <option value="sangat_baik">Sangat Baik</option>
+                                            <option value="baik">Baik</option>
+                                            <option value="cukup">Cukup</option>
+                                            <option value="kurang_baik">Kurang Baik</option>
+                                            <option value="tidak_baik">Tidak Baik</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Keahlian</label>
+                                        <select name="keahlian" class="form-select" required>
+                                            <option value="" disabled selected>-- Pilih Level --</option>
+                                            <option value="sangat_baik">Sangat Baik</option>
+                                            <option value="baik">Baik</option>
+                                            <option value="cukup">Cukup</option>
+                                            <option value="kurang_baik">Kurang Baik</option>
+                                            <option value="tidak_baik">Tidak Baik</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Penggunaan Teknologi</label>
+                                        <select name="penggunaanteknologi" class="form-select" required>
+                                            <option value="" disabled selected>-- Pilih Level --</option>
+                                            <option value="sangat_baik">Sangat Baik</option>
+                                            <option value="baik">Baik</option>
+                                            <option value="cukup">Cukup</option>
+                                            <option value="kurang_baik">Kurang Baik</option>
+                                            <option value="tidak_baik">Tidak Baik</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Kerja Sama Tim</label>
+                                        <select name="teamwork" class="form-select" required>
+                                            <option value="" disabled selected>-- Pilih Level --</option>
+                                            <option value="sangat_baik">Sangat Baik</option>
+                                            <option value="baik">Baik</option>
+                                            <option value="cukup">Cukup</option>
+                                            <option value="kurang_baik">Kurang Baik</option>
+                                            <option value="tidak_baik">Tidak Baik</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Komunikasi</label>
+                                        <select name="komunikasi" class="form-select" required>
+                                            <option value="" disabled selected>-- Pilih Level --</option>
+                                            <option value="sangat_baik">Sangat Baik</option>
+                                            <option value="baik">Baik</option>
+                                            <option value="cukup">Cukup</option>
+                                            <option value="kurang_baik">Kurang Baik</option>
+                                            <option value="tidak_baik">Tidak Baik</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Pengembangan Skils</label>
+                                        <select name="pengembangan" class="form-select" required>
+                                            <option value="" disabled selected>-- Pilih Level --</option>
+                                            <option value="sangat_baik">Sangat Baik</option>
+                                            <option value="baik">Baik</option>
+                                            <option value="cukup">Cukup</option>
+                                            <option value="kurang_baik">Kurang Baik</option>
+                                            <option value="tidak_baik">Tidak Baik</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -419,6 +570,7 @@
             function updateProgress() {
                 const form = document.getElementById('alumniForm');
                 const inputs = form.querySelectorAll('input[required], select[required]');
+                const detailWirausaha = document.getElementById('detailWirausaha');
                 let filledInputs = 0;
 
                 inputs.forEach(input => {
@@ -426,6 +578,7 @@
                         if (form.querySelector(`input[name="${input.name}"]:checked`)) {
                             filledInputs++;
                         }
+
                     } else if (input.value.trim() !== '') {
                         filledInputs++;
                     }
@@ -440,14 +593,24 @@
             document.querySelectorAll('input[name="bekerja"]').forEach(radio => {
                 radio.addEventListener('change', function() {
                     const detailPekerjaan = document.getElementById('detailPekerjaan');
+                    const detailWirausaha = document.getElementById('detailWirausaha')
                     if (this.value === 'ya') {
                         detailPekerjaan.style.display = 'block';
+                        detailWirausaha.style.display = 'none';
                         detailPekerjaan.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'nearest'
+                        });
+                    } else if (this.value === 'wirausaha') {
+                        detailWirausaha.style.display = 'block';
+                        detailPekerjaan.style.display = 'none';
+                        detailWirausaha.scrollIntoView({
                             behavior: 'smooth',
                             block: 'nearest'
                         });
                     } else {
                         detailPekerjaan.style.display = 'none';
+                        detailWirausaha.style.display = 'none';
                     }
                     updateProgress();
                 });
