@@ -14,8 +14,8 @@
             <div class="bg-body-light border-bottom py-4">
                 <div class="content d-flex flex-column flex-sm-row justify-content-between align-items-center">
                     <div>
-                        <h1 class="h3 fw-bold text-primary mb-1">📄 Edit Data Tracer Alumni</h1>
-                        <p class="text-muted mb-0">Perbarui data tracer alumni.</p>
+                        <h1 class="h3 fw-bold text-primary mb-1">📄 Edit Data Tracer Pengguna Alumni</h1>
+                        <p class="text-muted mb-0">Perbarui data tracer pengguna alumni.</p>
                     </div>
                     <div>
                         <a href="{{ route('listtracerpengguna.index') }}" class="btn btn-secondary">
@@ -28,7 +28,7 @@
             <div class="content">
                 <div class="block block-rounded shadow">
                     <div class="block-header block-header-default bg-primary text-white">
-                        <h3 class="block-title fw-semibold">📋 Form Edit Tracer Alumni</h3>
+                        <h3 class="block-title fw-semibold">📋 Form Edit Tracer Pengguna Alumni</h3>
                     </div>
                     <div class="block-content block-content-full">
                         <form action="{{ route('listtracerpengguna.update', $data->id) }}" method="POST">

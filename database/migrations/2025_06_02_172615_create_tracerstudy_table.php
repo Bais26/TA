@@ -22,13 +22,13 @@ return new class extends Migration
 
             // Jika wirausaha
             $table->string('nama_usaha')->nullable();
-            $table->string('posisi_usaha')->nullable(); // founder/co-founder/staff/freelance
-            $table->string('tingkat_usaha')->nullable(); // lokal/nasional/internasional
+            $table->string('posisi_usaha')->nullable();
+            $table->string('tingkat_usaha')->nullable();
             $table->string('alamat_usaha')->nullable();
-            $table->string('pendapatan_usaha')->nullable(); // 0-2jt, dst
+            $table->string('pendapatan_usaha')->nullable();
 
             // Status kerja
-            $table->string('status_kerja')->nullable(); // aktif/tidak/wirausaha
+            $table->string('status_kerja')->nullable();
 
             // Kompetensi lulusan (penilaian diri)
             $table->string('etika')->nullable();

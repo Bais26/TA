@@ -6,6 +6,7 @@
 @if($userRole === 'admin')
     <a href="{{ route('listtraceralumni.index') }}" class="btn btn-primary">✏️ Edit Data Tracer Alumni</a>
 @endif
+
 <!doctype html>
 <html lang="id">
   @include('components.admin.head')
@@ -31,24 +32,6 @@
               </h2>
             </div>
             <div class="mt-3 mt-md-0 ms-md-3">
-              <div class="dropdown d-inline-block">
-                <button type="button" class="btn btn-sm btn-alt-secondary" id="dropdown-analytics-overview" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="fa fa-fw fa-calendar-alt opacity-50 me-1"></i> Semua waktu <i class="fa fa-fw fa-angle-down ms-1"></i>
-                </button>
-                <div class="dropdown-menu dropdown-menu-end fs-sm" aria-labelledby="dropdown-analytics-overview">
-                  <a class="dropdown-item fw-medium" href="#">30 hari terakhir</a>
-                  <a class="dropdown-item fw-medium" href="#">Bulan lalu</a>
-                  <a class="dropdown-item fw-medium" href="#">3 bulan terakhir</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item fw-medium" href="#">Tahun ini</a>
-                  <a class="dropdown-item fw-medium" href="#">Tahun lalu</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between active" href="#">
-                    <span>Semua waktu</span>
-                    <i class="fa fa-check text-primary"></i>
-                  </a>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -67,9 +50,9 @@
             @foreach([
               ['label' => 'Mahasiswa', 'jumlah' => $countMahasiswa, 'icon' => 'fas fa-chalkboard-teacher', 'link' => '/listmahasiswa'],
               ['label' => 'Dosen', 'jumlah' => $countDosen, 'icon' => 'far fa-user-circle', 'link' => '/listdosen'],
-              ['label' => 'Alumni', 'jumlah' => $countAlumni, 'icon' => 'fas fa-user-graduate', 'link' => '/listalumni']  
+              ['label' => 'Alumni', 'jumlah' => $countAlumni, 'icon' => 'fas fa-user-graduate', 'link' => '/listalumni']
             ] as $item)
-            
+
               <div class="col-sm-6 col-xxl-3">
                 <div class="block block-rounded d-flex flex-column h-100">
                   <div class="block-content block-content-full d-flex justify-content-between align-items-center">
@@ -97,7 +80,6 @@
           <div class="row">
             <div class="col-xl-8 col-xxl-9 d-flex flex-column">
               <div class="block block-rounded flex-grow-1 d-flex flex-column">
-
                 {{-- Header --}}
                 <div class="block-header block-header-default">
                   <h3 class="block-title">Statistik Alumni</h3>
@@ -121,7 +103,7 @@
                       ['label' => 'Belum Bekerja', 'value' => $statistikAlumni['Belum Bekerja'], 'icon' => 'fa-caret-down', 'color' => 'danger'],
                       ['label' => 'Wirausaha', 'value' => $statistikAlumni['Wirausaha'], 'icon' => 'fa-caret-up', 'color' => 'warning'],
                     ] as $stat)
-                    
+
                       <div class="col-sm-4">
                         <dl class="mb-0">
                           <dt class="fs-3 fw-bold d-inline-flex align-items-center">

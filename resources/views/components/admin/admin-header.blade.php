@@ -2,12 +2,12 @@
     <!-- Header Content -->
     <div class="content-header">
         <div class="d-flex align-items-center">
-           
+
             <button type="button" class="btn btn-sm btn-alt-secondary me-2 d-lg-none" data-toggle="layout"
                 data-action="sidebar_toggle">
                 <i class="fa fa-fw fa-bars"></i>
             </button>
-            
+
             <button type="button" class="btn btn-sm btn-alt-secondary me-2 d-none d-lg-inline-block" data-toggle="layout"
                 data-action="sidebar_mini_toggle">
                 <i class="fa fa-fw fa-ellipsis-v"></i>
@@ -37,12 +37,8 @@
                     <div class="p-2">
 
                         <a class="dropdown-item d-flex align-items-center justify-content-between"
-                            href="be_pages_generic_profile.html">
+                            href="/profile">
                             <span class="fs-sm fw-medium">Profile</span>
-                        </a>
-                        <a class="dropdown-item d-flex align-items-center justify-content-between"
-                            href="javascript:void(0)">
-                            <span class="fs-sm fw-medium">Settings</span>
                         </a>
                     </div>
                     <div role="separator" class="dropdown-divider m-0"></div>
@@ -53,7 +49,7 @@
                                 Log Out
                             </button>
                         </form>
-                        
+
                     </div>
                 </div>
             </div>
