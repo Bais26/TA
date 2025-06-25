@@ -18,11 +18,21 @@ class TracerStudy extends Model
         'nama_perusahaan',
         'jabatan',
         'alamat_pekerjaan',
-        'status_kerja',
-        'relevansi_pekerjaan',
-        'pekerjaan',
         'gaji',
-        'saran',
+        'nama_usaha',
+        'posisi_usaha',
+        'tingkat_usaha',
+        'alamat_usaha',
+        'pendapatan_usaha',
+        'status_kerja',
+        'etika',
+        'keahlian',
+        'penggunaanteknologi',
+        'teamwork',
+        'komunikasi',
+        'pengembangan',
+        'relevansi_pekerjaan',
+        'saran'
     ];
 
     protected $casts = [

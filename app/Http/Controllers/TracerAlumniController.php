@@ -79,7 +79,8 @@ class TracerAlumniController extends Controller
     public function edit($id)
     {
         $data = TracerStudy::findOrFail($id);
-        return view('tracer.alumni.edit-salinan-table', compact('data'));
+        $alumniList = \App\Models\Alumni::all();
+        return view('tracer.alumni.edit-salinan-table', compact('data', 'alumniList'));
     }
 
     // Update

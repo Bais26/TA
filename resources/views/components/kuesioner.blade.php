@@ -356,29 +356,29 @@
                                         </select>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label">
-                                            <i class="fas fa-globe text-primary"></i>
-                                            Tingkat Tempat Usaha
-                                        </label>
-                                        <select name="tingkat_usaha" class="form-select">
-                                            <option value="" disabled selected>-- Pilih tingkat --</option>
-                                            <option value="lokal">Lokal</option>
-                                            <option value="nasional">Nasional</option>
-                                            <option value="internasional">Internasional</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">
-                                            <i class="fa-solid fa-money-bill-wave text-primary"></i>
-                                            Rata-rata Pendapatan
-                                        </label>
-                                        <select name="tingkat_usaha" class="form-select">
-                                            <option value="" disabled selected>-- Pilih pendapatan --</option>
-                                            <option value="lokal">0 - 2 juta</option>
-                                            <option value="nasional">> 2 - 4 juta</option>
-                                            <option value="internasional">> 4 juta</option>
-                                        </select>
-                                    </div>
+    <label class="form-label">
+        <i class="fas fa-globe text-primary"></i>
+        Tingkat Tempat Usaha
+    </label>
+    <select name="tingkat_usaha" class="form-select">
+        <option value="" disabled selected>-- Pilih tingkat --</option>
+        <option value="lokal">Lokal</option>
+        <option value="nasional">Nasional</option>
+        <option value="internasional">Internasional</option>
+    </select>
+</div>
+                                   <div class="col-md-6">
+    <label class="form-label">
+        <i class="fa-solid fa-money-bill-wave text-primary"></i>
+        Rata-rata Pendapatan
+    </label>
+    <select name="pendapatan_usaha" class="form-select">
+        <option value="" disabled selected>-- Pilih pendapatan --</option>
+        <option value="lokal">0 - 2 juta</option>
+        <option value="nasional">> 2 - 4 juta</option>
+        <option value="internasional">> 4 juta</option>
+    </select>
+</div>
                                     <div class="col-md-6">
                                         <label class="form-label">
                                             <i class="fas fa-map-marker-alt text-primary"></i>
