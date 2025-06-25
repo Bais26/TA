@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class KuesionerAlumni extends Controller
+class KuesionerAlumniController extends Controller
 {
     public function index()
     {
@@ -36,12 +36,12 @@ class KuesionerAlumni extends Controller
                 'relevansi_kurikulum' => ['required', 'string'],
                 'saran' => ['nullable', 'string', 'max:500'],
             ]);
-    
+
             DB::beginTransaction();
-    
+
             // Ambil user yang login
             $user = auth()->user();
-    
+
             // Cek data alumni
             $alumni = Alumni::firstOrCreate(
                 ['id_users' => $user->id],
@@ -52,7 +52,7 @@ class KuesionerAlumni extends Controller
                     'alamat' => $validated['alamat'],
                 ]
             );
-    
+
             // Update data alumni jika sudah ada
             $alumni->update([
                 'nama_lengkap' => $validated['nama'],
@@ -60,10 +60,10 @@ class KuesionerAlumni extends Controller
                 'tahun_lulus' => $validated['tahun_lulus'],
                 'alamat' => $validated['alamat'],
             ]);
-    
+
             // Update email user
             $user->update(['email' => $validated['email']]);
-    
+
             // Buat atau update tracer study
             $tracer = TracerStudy::updateOrCreate(
                 ['id_alumni' => $alumni->id],
@@ -79,17 +79,17 @@ class KuesionerAlumni extends Controller
                     'saran' => $validated['saran'],
                 ]
             );
-    
+
             DB::commit();
-    
+
             return redirect()->route('home')->with('success', 'Kuesioner berhasil disimpan!');
         } catch (\Exception $e) {
             DB::rollBack();
-    
+
             return back()->withErrors(['error' => 'Gagal menyimpan data: ' . $e->getMessage()]);
         }
     }
-    
+
 
     public function destroy($id)
     {

@@ -116,7 +116,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Alamat Lengkap</label>
-                                        <input type="text" name="alamat" class="form-control" 
+                                        <input type="text" name="alamat" class="form-control"
                                             placeholder="Desa, Kecamatan, Kabupaten" value="{{ $alumni->alamat ?? '' }}" required>
                                     </div>
                                     <div class="col-md-6">

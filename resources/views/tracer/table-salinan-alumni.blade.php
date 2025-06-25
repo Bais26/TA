@@ -22,6 +22,43 @@
 
     <div class="content">
         <div class="block block-rounded border-0 shadow-sm mb-4">
+
+            <div class="row g-3 py-3 px-4 align-items-center">
+                <div class="col-md-4">
+                    <div class="card card-body border-0 bg-primary bg-gradient text-white shadow-sm">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="fs-2 fw-bold">{{ $totalAlumni }}</div>
+                                <div class="fs-sm">Total Alumni</div>
+                            </div>
+                            <div><i class="fa fa-users fa-2x opacity-50"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-body border-0 bg-success bg-gradient text-white shadow-sm">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="fs-2 fw-bold">{{ $sudahMengisi }}</div>
+                                <div class="fs-sm">Sudah Mengisi</div>
+                            </div>
+                            <div><i class="fa fa-check-circle fa-2x opacity-50"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-body border-0 bg-warning bg-gradient text-dark shadow-sm">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="fs-2 fw-bold">{{ $belumMengisi }}</div>
+                                <div class="fs-sm">Belum Mengisi</div>
+                            </div>
+                            <div><i class="fa fa-times-circle fa-2x opacity-50"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- FILTER DAN EXPORT BUTTON -->
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2"
                 style="padding:1rem 1rem 0 1rem;">
@@ -233,11 +270,11 @@
 </li>
 
                                 ${userRole === 'admin' ? `
-                                        <li>
-                                            <a class="dropdown-item btn-delete" href="#" data-id="${data.id}">
-                                                <i class="fa fa-trash-alt me-1 text-danger"></i> Hapus
-                                            </a>
-                                        </li>` : ''}
+                                                <li>
+                                                    <a class="dropdown-item btn-delete" href="#" data-id="${data.id}">
+                                                        <i class="fa fa-trash-alt me-1 text-danger"></i> Hapus
+                                                    </a>
+                                                </li>` : ''}
                             </ul>
                         </div>`;
                         }
@@ -287,44 +324,47 @@
                 $('#modalDetail').modal('show');
             });
 
-            $(document).ready(function () {
-        // Setup CSRF token for AJAX
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
+            $(document).ready(function() {
+                // Setup CSRF token for AJAX
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
 
-        // Hapus data
-        $('#datatable').on('click', '.btn-delete', function () {
-            const id = $(this).data('id');
+                // Hapus data
+                $('#datatable').on('click', '.btn-delete', function() {
+                    const id = $(this).data('id');
 
-            Swal.fire({
-                title: 'Yakin ingin menghapus?',
-                text: 'Data tidak bisa dikembalikan setelah dihapus!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#dc3545',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, hapus!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: `/listtraceralumni/${id}`,
-                        type: 'DELETE',
-                        success: function (res) {
-                            $('#datatable').DataTable().ajax.reload();
-                            Swal.fire('Terhapus!', res.message, 'success');
-                        },
-                        error: function (xhr) {
-                            Swal.fire('Gagal', 'Tidak dapat menghapus data.', 'error');
+                    Swal.fire({
+                        title: 'Yakin ingin menghapus?',
+                        text: 'Data tidak bisa dikembalikan setelah dihapus!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#dc3545',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Ya, hapus!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: `/listtraceralumni/${id}`,
+                                type: 'DELETE',
+                                success: function(res) {
+                                    $('#datatable').DataTable().ajax.reload();
+                                    Swal.fire('Terhapus!', res.message,
+                                        'success');
+                                },
+                                error: function(xhr) {
+                                    Swal.fire('Gagal',
+                                        'Tidak dapat menghapus data.',
+                                        'error');
+                                }
+                            });
                         }
                     });
-                }
+                });
             });
-        });
-    });
         });
     </script>
     <style>

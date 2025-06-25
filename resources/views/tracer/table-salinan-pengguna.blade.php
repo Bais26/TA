@@ -16,45 +16,42 @@
     <div class="content">
         <div class="block block-rounded shadow-sm">
             <!-- Rekapan Data -->
-            <div class="row g-3 py-3 px-4 align-items-center">
-                <div class="col-md-4">
-                    <div class="card card-body border-0 bg-gradient-info text-white shadow-sm">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="fs-2 fw-bold">{{ $data->count() }}</div>
-                                <div class="fs-sm">Total Pengguna</div>
-                            </div>
-                            <div><i class="fa fa-users fa-2x opacity-50"></i></div>
-                        </div>
-                    </div>
+<div class="row g-3 py-3 px-4 align-items-center">
+    <div class="col-md-4">
+        <div class="card card-body border-0 bg-primary bg-gradient text-white shadow-sm">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="fs-2 fw-bold">{{ $totalAlumni }}</div>
+                    <div class="fs-sm">Total Alumni</div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card card-body border-0 bg-gradient-success text-white shadow-sm">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="fs-2 fw-bold">
-                                    {{ $data->whereNotNull('created_at')->count() }}
-                                </div>
-                                <div class="fs-sm">Sudah Mengisi</div>
-                            </div>
-                            <div><i class="fa fa-check-circle fa-2x opacity-50"></i></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card card-body border-0 bg-gradient-warning text-dark shadow-sm">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="fs-2 fw-bold">
-                                    {{ $data->whereNull('created_at')->count() }}
-                                </div>
-                                <div class="fs-sm">Belum Mengisi</div>
-                            </div>
-                            <div><i class="fa fa-times-circle fa-2x opacity-50"></i></div>
-                        </div>
-                    </div>
-                </div>
+                <div><i class="fa fa-users fa-2x opacity-50"></i></div>
             </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-body border-0 bg-success bg-gradient text-white shadow-sm">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="fs-2 fw-bold">{{ $sudahMengisi }}</div>
+                    <div class="fs-sm">Sudah Mengisi</div>
+                </div>
+                <div><i class="fa fa-check-circle fa-2x opacity-50"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-body border-0 bg-warning bg-gradient text-dark shadow-sm">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="fs-2 fw-bold">{{ $belumMengisi }}</div>
+                    <div class="fs-sm">Belum Mengisi</div>
+                </div>
+                <div><i class="fa fa-times-circle fa-2x opacity-50"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+
             <!-- End Rekapan Data -->
 
             <div class="block-header block-header-default bg-light d-flex align-items-center justify-content-between px-4 py-2">

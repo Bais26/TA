@@ -260,7 +260,7 @@
         } else {
             email.classList.remove("is-invalid");
         }
-        
+
         if (password.value.length < 6) {
             password.classList.add("is-invalid");
             valid = false;

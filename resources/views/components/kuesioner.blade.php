@@ -439,13 +439,13 @@
                         <div class="section-card">
                             <div class="section-header">
                                 <i class="fas fa-star"></i>
-                                Survey Kompetensi Lulusan
+                                Bandingkan Kompetensi anda Pada SAAT LULUS (yang dikuasai ketika baru lulus)
                             </div>
                             <div class="section-body">
                                 <label class="form-label">Penilaian Kompetensi</label>
                                 <div class="row g-4">
                                     <div class="col-md-6">
-                                        <label class="form-label">Etika</label>
+                                        <label class="form-label">Bahasa Inggris</label>
                                         <select name="etika" class="form-select" required>
                                             <option value="" disabled selected>-- Pilih Level --</option>
                                             <option value="sangat_baik">Sangat Baik</option>

@@ -12,9 +12,21 @@ class TracerAlumniController extends Controller
     // Menampilkan halaman dengan DataTables
     public function index()
     {
+        $totalAlumni = Alumni::count();
+
+        // Total yang sudah mengisi TracerStudy
+        // Asumsi: alumni_id adalah foreign key ke Alumni
+        $sudahMengisi = TracerStudy::distinct('id_alumni')->count('id_alumni');
+
+        // Yang belum mengisi = total - sudah mengisi
+        $belumMengisi = $totalAlumni - $sudahMengisi;
+
         if (request()->ajax()) {
             // Ambil data tracer study beserta relasi alumni dan users
             $tracer = TracerStudy::with('alumni.users')->get();
+
+            // Total alumni (misal primary key-nya 'id')
+
 
             return DataTables::of($tracer)
                 ->addColumn('nama_alumni', function ($row) {
@@ -38,7 +50,7 @@ class TracerAlumniController extends Controller
                 ->make(true);
         }
 
-        return view('tracer.table-salinan-alumni');
+        return view('tracer.table-salinan-alumni', compact('totalAlumni', 'sudahMengisi', 'belumMengisi'));
     }
 
     // Contoh fungsi lain untuk data alumni (jika dibutuhkan)
@@ -73,7 +85,7 @@ class TracerAlumniController extends Controller
     // Update
     public function update(Request $request, $id)
     {
-       
+
 
         $tracer = TracerStudy::findOrFail($id);
         $tracer->update($request->all());
@@ -92,5 +104,4 @@ class TracerAlumniController extends Controller
             'message' => 'Data berhasil dihapus.'
         ]);
     }
-
 }

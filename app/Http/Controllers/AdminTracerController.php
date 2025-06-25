@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Alumni;
 use App\Models\tracer_pengguna;
 use Illuminate\Http\Request;
 
@@ -33,7 +34,11 @@ class AdminTracerController extends Controller
         }
 
         $data = $query->latest()->paginate(10);
-
+ $totalAlumni = Alumni::count();
+    // Asumsi: field relasi alumni di tracer_pengguna adalah alumni_id
+    // Jika tidak ada, sesuaikan fieldnya!
+    $sudahMengisi = tracer_pengguna::distinct('user_id')->count('user_id');
+    $belumMengisi = $totalAlumni - $sudahMengisi;
         // Ambil data untuk filter dropdown
         $prodis = tracer_pengguna::distinct()->pluck('prodi');
         $tahuns = tracer_pengguna::selectRaw('YEAR(created_at) as tahun')
@@ -41,7 +46,7 @@ class AdminTracerController extends Controller
             ->orderBy('tahun', 'desc')
             ->pluck('tahun');
 
-        return view('tracer.table-salinan-pengguna', compact('data', 'prodis', 'tahuns'));
+        return view('tracer.table-salinan-pengguna', compact('data', 'prodis', 'tahuns','totalAlumni', 'sudahMengisi', 'belumMengisi'));
     }
 
     /**
