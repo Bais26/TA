@@ -31,8 +31,9 @@ class HasilTracerController extends Controller
             'pengembangan' => 'Pengembangan Diri'
         ];
 
+
         // Statistik alumni (asumsi tabel user = semua alumni)
-        $totalAlumni   = Alumni ::count();
+        $totalAlumni   = Alumni::count();
         $sudahMengisi  = tracer_pengguna::count();
         $belumMengisi  = $totalAlumni - $sudahMengisi;
 
@@ -42,6 +43,16 @@ class HasilTracerController extends Controller
             $data = tracer_pengguna::select($field)->get()->pluck($field)->map(function ($v) use ($nilaiMap) {
                 return $nilaiMap[strtolower($v)] ?? 0;
             });
+            // Rekap umum
+            $totalNilai = 0;
+            $totalIndikator = 0;
+            foreach ($hasil as $row) {
+                $totalNilai += $row['rata_rata'];
+                $totalIndikator++;
+            }
+            $kesimpulanRataRata = $totalIndikator ? round($totalNilai / $totalIndikator, 2) : 0;
+            $kesimpulanKategori = $this->getKategoriNilai($kesimpulanRataRata);
+
 
             // Rekap jumlah per kategori
             $rekap = [
@@ -65,7 +76,7 @@ class HasilTracerController extends Controller
             ];
         }
 
-        return view('tracer.hasil', compact('totalAlumni', 'sudahMengisi', 'belumMengisi', 'hasil'));
+        return view('tracer.hasil', compact('totalAlumni', 'sudahMengisi', 'belumMengisi', 'hasil', 'kesimpulanKategori', 'kesimpulanRataRata'));
     }
 
     // Fungsi keterangan kategori nilai
