@@ -150,9 +150,11 @@
                         Berdasarkan hasil survei, alumni Politeknik tergolong
                         <span class="badge bg-light text-primary shadow-sm px-2 py-1 fs-6">{{ $kesimpulanKategori }}</span>
                         dengan rata-rata nilai
-                        <span
-                            class="badge bg-light text-primary shadow-sm px-2 py-1 fs-6">{{ $kesimpulanRataRata }}</span>.
+                        <span class="badge bg-light text-primary shadow-sm px-2 py-1 fs-6">{{ $kesimpulanRataRata }}</span>
+                        dan persentase
+                        <span class="badge bg-light text-primary shadow-sm px-2 py-1 fs-6">{{ $kesimpulanPersentase }}%</span>.
                     </p>
+
                 </div>
             </div>
         </div>

@@ -4,15 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Alumni;
 use App\Models\tracer_pengguna;
+use App\Models\TracerPengguna;
 use App\Models\TracerStudy;
 use Illuminate\Http\Request;
+use PHPUnit\Event\Tracer\Tracer;
 
 class TracerStudyController extends Controller
 {
     // Menampilkan semua data tracer
     public function index(Request $request)
     {
-        $query = tracer_pengguna::query();
+        $query = TracerPengguna::query();
 
         // Filter berdasarkan prodi jika ada
         if ($request->has('prodi')) {
@@ -62,10 +64,10 @@ class TracerStudyController extends Controller
             'alamat_perusahaan' => 'nullable|string',
             'saran' => 'nullable|string'
         ]);
-    
+
         $user = auth()->user(); // ambil user login
-    
-        tracer_pengguna::create([
+
+        TracerPengguna::create([
             'user_id' => $user->id,
             'nama' => $request->nama,
             'alamat' => $request->alamat,
@@ -85,10 +87,10 @@ class TracerStudyController extends Controller
             'alamat_perusahaan' => $request->alamat_perusahaan,
             'saran' => $request->saran
         ]);
-    
+
         return redirect()->back()->with('success', 'Data berhasil disimpan.');
     }
-    
+
     // Menampilkan detail satu data
     // public function show($id)
     // {
@@ -97,36 +99,34 @@ class TracerStudyController extends Controller
     // }
     public function showPengguna($id)
     {
-        $pengguna = tracer_pengguna::where('user_id', $id)->first(); // atau ->get() jika banyak
+        $pengguna = TracerPengguna::where('user_id', $id)->first(); // atau ->get() jika banyak
 
         return view('alumni.detail-pengguna', compact('pengguna'));
     }
-    public function showStudy($id)
+   public function showStudy($id)
 {
-    $tracer = TracerStudy::with('alumni')
-        ->where('id_alumni', $id)
-        ->firstOrFail();
+    $tracer = TracerStudy::with('alumni')->where('id_alumni', $id)->firstOrFail();
 
     return view('alumni.detail-study', compact('tracer'));
 }
 
-    
-    
-    
-    
-    
+
+
+
+
+
 
     // Menampilkan form edit
     public function edit($id)
     {
-        $data = tracer_pengguna::findOrFail($id);
+        $data = TracerPengguna::findOrFail($id);
         return view('tracer.edit', compact('data'));
     }
 
     // Memperbarui data
     public function update(Request $request, $id)
     {
-        $data = tracer_pengguna::findOrFail($id);
+        $data = TracerPengguna::findOrFail($id);
 
         $data->update($request->all());
 
@@ -136,7 +136,7 @@ class TracerStudyController extends Controller
     // Menghapus data
     public function destroy($id)
     {
-        $data = tracer_pengguna::findOrFail($id);
+        $data = TracerPengguna::findOrFail($id);
         $data->delete();
 
         return redirect()->route('tracer.index')->with('success', 'Data berhasil dihapus.');

@@ -19,7 +19,7 @@ class pageDashboard {
         let chartTotalEarningsCon = document.getElementById(
             "js-chartjs-total-earnings"
         );
-        let chartNewCustomersCon = document.getElementById(
+        let chartNewCustomersCon = document.getElementById( 
             "js-chartjs-new-customers"
         );
 

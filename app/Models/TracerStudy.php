@@ -45,4 +45,9 @@ class TracerStudy extends Model
     {
         return $this->belongsTo(Alumni::class, 'id_alumni');
     }
+    // public function users()
+    // {
+    //     return $this->belongsTo(User::class, 'id_users');
+    // }
+
 }

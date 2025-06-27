@@ -22,6 +22,7 @@ class DashboardController extends Controller
         $tahunSekarang = Carbon::now()->year;
         $tahunAwal = 2021;
 
+
         // Ambil data alumni per tahun
         $alumniPerTahun = DB::table('alumni')
             ->select(DB::raw('YEAR(tanggal_lulus) as tahun'), DB::raw('COUNT(*) as total'))

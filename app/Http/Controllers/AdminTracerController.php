@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Alumni;
 use App\Models\tracer_pengguna;
+use App\Models\TracerPengguna;
 use Illuminate\Http\Request;
 
 class AdminTracerController extends Controller
@@ -14,7 +15,7 @@ class AdminTracerController extends Controller
      */
     public function index(Request $request)
     {
-        $query = tracer_pengguna::query();
+        $query = TracerPengguna::query();
 
         // Filter berdasarkan prodi jika ada
         if ($request->filled('prodi')) {
@@ -37,11 +38,11 @@ class AdminTracerController extends Controller
  $totalAlumni = Alumni::count();
     // Asumsi: field relasi alumni di tracer_pengguna adalah alumni_id
     // Jika tidak ada, sesuaikan fieldnya!
-    $sudahMengisi = tracer_pengguna::distinct('user_id')->count('user_id');
+    $sudahMengisi = TracerPengguna::distinct('user_id')->count('user_id');
     $belumMengisi = $totalAlumni - $sudahMengisi;
         // Ambil data untuk filter dropdown
-        $prodis = tracer_pengguna::distinct()->pluck('prodi');
-        $tahuns = tracer_pengguna::selectRaw('YEAR(created_at) as tahun')
+        $prodis = TracerPengguna::distinct()->pluck('prodi');
+        $tahuns = TracerPengguna::selectRaw('YEAR(created_at) as tahun')
             ->distinct()
             ->orderBy('tahun', 'desc')
             ->pluck('tahun');
@@ -54,7 +55,7 @@ class AdminTracerController extends Controller
      */
     public function show($id)
     {
-        $data = tracer_pengguna::findOrFail($id);
+        $data = TracerPengguna::findOrFail($id);
         return view('tracer.pengguna.detail-salinan-table', compact('data'));
     }
 
@@ -63,7 +64,7 @@ class AdminTracerController extends Controller
      */
     public function edit($id)
     {
-        $data = tracer_pengguna::findOrFail($id);
+        $data = TracerPengguna::findOrFail($id);
         return view('tracer.pengguna.edit-salinan-table', compact('data'));
     }
 
@@ -72,7 +73,7 @@ class AdminTracerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = tracer_pengguna::findOrFail($id);
+        $data = TracerPengguna::findOrFail($id);
 
         $request->validate([
             'nama' => 'required|string|max:255',
@@ -111,7 +112,7 @@ class AdminTracerController extends Controller
      */
     public function destroy($id)
     {
-        $data = tracer_pengguna::findOrFail($id);
+        $data = TracerPengguna::findOrFail($id);
         $data->delete();
 
         return redirect()->back()
@@ -123,7 +124,7 @@ class AdminTracerController extends Controller
      */
     public function export(Request $request)
     {
-        $query = tracer_pengguna::query();
+        $query = TracerPengguna::query();
 
         // Apply same filters as index
         if ($request->filled('prodi')) {
@@ -145,11 +146,11 @@ class AdminTracerController extends Controller
      */
     public function getStatistics()
     {
-        $total = tracer_pengguna::count();
-        $thisMonth = tracer_pengguna::whereMonth('created_at', now()->month)
+        $total = TracerPengguna::count();
+        $thisMonth = TracerPengguna::whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
             ->count();
-        $byProdi = tracer_pengguna::selectRaw('prodi, COUNT(*) as total')
+        $byProdi = TracerPengguna::selectRaw('prodi, COUNT(*) as total')
             ->groupBy('prodi')
             ->get();
 

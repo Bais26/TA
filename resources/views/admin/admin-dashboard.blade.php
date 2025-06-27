@@ -2,131 +2,159 @@
     $userRole = Auth::user()->role;
 @endphp
 
-<!-- TOMBOL HANYA UNTUK ADMIN -->
-@if($userRole === 'admin')
-    <a href="{{ route('listtraceralumni.index') }}" class="btn btn-primary">✏️ Edit Data Tracer Alumni</a>
-@endif
-
 <!doctype html>
 <html lang="id">
   @include('components.admin.head')
   <body>
     <div id="page-container" class="sidebar-o sidebar-dark enable-page-overlay side-scroll page-header-fixed main-content-narrow">
-
-      {{-- Header, Sidebar, Side Overlay --}}
       @include('components.admin.admin-header')
       @include('components.admin.sidebar')
       @include('components.admin.side-overlay')
 
       <main id="main-container">
-        {{-- Hero Section --}}
+        {{-- Hero --}}
         <div class="content">
           <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center py-3 text-center text-md-start">
             <div class="flex-grow-1 mb-2 mb-md-0">
               <h1 class="h3 fw-bold mb-1">Dashboard</h1>
               <h2 class="h6 fw-medium text-muted mb-0">
-                Selamat datang kembali,
-                <a class="fw-semibold" href="be_pages_generic_profile.html">
-                  {{ Auth::user()->username }}
-                </a>
+                Selamat datang kembali, <a class="fw-semibold" href="#">{{ Auth::user()->username }}</a>
               </h2>
-            </div>
-            <div class="mt-3 mt-md-0 ms-md-3">
             </div>
           </div>
         </div>
-        {{-- END Hero Section --}}
 
-        {{-- Page Content --}}
         <div class="content">
+
 
           {{-- Overview Boxes --}}
           <div class="row items-push">
-            {{-- @foreach ([
-              ['label' => 'Dosen', 'jumlah' => 32, 'icon' => 'fas fa-chalkboard-teacher', 'link' => '/listdosen'],
-              ['label' => 'Mahasiswa', 'jumlah' => $count ?? 0 , 'icon' => 'far fa-user-circle', 'link' => '/listmahasiswa'],
-              ['label' => 'Alumni', 'jumlah' => $count ?? 0, 'icon' => 'fas fa-user-graduate', 'link' => '/listalumni'],
-            ] as $item) --}}
-            @foreach([
-              ['label' => 'Mahasiswa', 'jumlah' => $countMahasiswa, 'icon' => 'fas fa-chalkboard-teacher', 'link' => '/listmahasiswa'],
-              ['label' => 'Dosen', 'jumlah' => $countDosen, 'icon' => 'far fa-user-circle', 'link' => '/listdosen'],
-              ['label' => 'Alumni', 'jumlah' => $countAlumni, 'icon' => 'fas fa-user-graduate', 'link' => '/listalumni']
-            ] as $item)
 
-              <div class="col-sm-6 col-xxl-3">
-                <div class="block block-rounded d-flex flex-column h-100">
-                  <div class="block-content block-content-full d-flex justify-content-between align-items-center">
-                    <dl class="mb-0">
-                      <dt class="fs-3 fw-bold">{{ $item['jumlah'] }}</dt>
-                      <dd class="fs-sm fw-medium text-muted mb-0">{{ $item['label'] }}</dd>
-                    </dl>
-                    <div class="item item-rounded-lg bg-body-light">
-                      <i class="{{ $item['icon'] }} fs-3 text-primary"></i>
-                    </div>
-                  </div>
-                  <div class="bg-body-light rounded-bottom">
-                    <a href="{{ $item['link'] }}" class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between">
-                      <span>Lihat semua {{ strtolower($item['label']) }}</span>
-                      <i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
-                    </a>
+            {{-- Mahasiswa --}}
+            <div class="col-sm-6 col-xxl-3">
+              <div class="block block-rounded d-flex flex-column h-100">
+                <div class="block-content block-content-full d-flex justify-content-between align-items-center">
+                  <dl class="mb-0">
+                    <dt class="fs-3 fw-bold">{{ $countMahasiswa }}</dt>
+                    <dd class="fs-sm fw-medium text-muted mb-0">Mahasiswa</dd>
+                  </dl>
+                  <div class="item item-rounded-lg bg-body-light">
+                    <i class="fas fa-chalkboard-teacher fs-3 text-primary"></i>
                   </div>
                 </div>
-              </div>
-            @endforeach
-          </div>
-          {{-- END Overview Boxes --}}
-
-          {{-- Statistik Alumni --}}
-          <div class="row">
-            <div class="col-xl-8 col-xxl-9 d-flex flex-column">
-              <div class="block block-rounded flex-grow-1 d-flex flex-column">
-                {{-- Header --}}
-                <div class="block-header block-header-default">
-                  <h3 class="block-title">Statistik Alumni</h3>
-                  <div class="block-options">
-                    <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-                      <i class="si si-refresh"></i>
-                    </button>
-                  </div>
+                <div class="bg-body-light rounded-bottom">
+                  <a href="/listmahasiswa" class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between">
+                    <span>Lihat semua mahasiswa</span>
+                    <i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
+                  </a>
                 </div>
-
-                {{-- Chart --}}
-                <div class="block-content block-content-full flex-grow-1 d-flex align-items-center">
-                  <canvas id="js-chartjs-earnings"></canvas>
-                </div>
-
-                {{-- Footer Stats --}}
-                <div class="block-content bg-body-light">
-                  <div class="row items-push text-center w-100">
-                    @foreach ([
-                      ['label' => 'Bekerja', 'value' => $statistikAlumni['Bekerja'], 'icon' => 'fa-caret-up', 'color' => 'success'],
-                      ['label' => 'Belum Bekerja', 'value' => $statistikAlumni['Belum Bekerja'], 'icon' => 'fa-caret-down', 'color' => 'danger'],
-                      ['label' => 'Wirausaha', 'value' => $statistikAlumni['Wirausaha'], 'icon' => 'fa-caret-up', 'color' => 'warning'],
-                    ] as $stat)
-
-                      <div class="col-sm-4">
-                        <dl class="mb-0">
-                          <dt class="fs-3 fw-bold d-inline-flex align-items-center">
-                            <i class="fa {{ $stat['icon'] }} fs-base text-{{ $stat['color'] }} me-1"></i>
-                            {{ $stat['value'] }}
-                          </dt>
-                          <dd class="fs-sm fw-medium text-muted mb-0">{{ $stat['label'] }}</dd>
-                        </dl>
-                      </div>
-                    @endforeach
-                  </div>
-                </div>
-
               </div>
             </div>
+
+            {{-- Dosen + Filter --}}
+            <div class="col-sm-6 col-xxl-3">
+              <div class="block block-rounded d-flex flex-column h-100">
+                <div class="block-content block-content-full d-flex justify-content-between align-items-start">
+                  <div>
+                    <dl class="mb-0">
+                      <dt class="fs-3 fw-bold">{{ $countDosen }}</dt>
+                      <dd class="fs-sm fw-medium text-muted mb-0">Dosen</dd>
+                    </dl>
+                  </div>
+                  <div class="item item-rounded-lg bg-body-light">
+                    <i class="far fa-user-circle fs-3 text-primary"></i>
+                  </div>
+                </div>
+                <div class="px-3 pb-3">
+                  <form method="GET" action="{{ route('home') }}">
+                    <label for="tahun_akademik" class="form-label fs-sm mb-1">Tahun Akademik:</label>
+                    <select name="tahun_akademik" id="tahun_akademik" class="form-select form-select-sm" onchange="this.form.submit()">
+                      @foreach ($tahunAkademikList as $ta)
+                        <option value="{{ $ta['kode'] }}" {{ $selectedTA == $ta['kode'] ? 'selected' : '' }}>
+                          {{ $ta['tahun_akademik'] }}{{ $ta['status'] == 1 ? ' (aktif)' : '' }}
+                        </option>
+                      @endforeach
+                    </select>
+                  </form>
+                </div>
+                <div class="bg-body-light rounded-bottom">
+                  <a href="/listdosen" class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between">
+                    <span>Lihat semua dosen</span>
+                    <i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {{-- Alumni --}}
+            <div class="col-sm-6 col-xxl-3">
+              <div class="block block-rounded d-flex flex-column h-100">
+                <div class="block-content block-content-full d-flex justify-content-between align-items-center">
+                  <dl class="mb-0">
+                    <dt class="fs-3 fw-bold">{{ $countAlumni }}</dt>
+                    <dd class="fs-sm fw-medium text-muted mb-0">Alumni</dd>
+                  </dl>
+                  <div class="item item-rounded-lg bg-body-light">
+                    <i class="fas fa-user-graduate fs-3 text-primary"></i>
+                  </div>
+                </div>
+                <div class="bg-body-light rounded-bottom">
+                  <a href="/listalumni" class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between">
+                    <span>Lihat semua alumni</span>
+                    <i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
           </div>
-          {{-- END Statistik Alumni --}}
+          {{-- End Overview --}}
+
+    {{-- Statistik Alumni --}}
+    <div class="row">
+    <div class="col-xl-8 col-xxl-9 d-flex flex-column">
+        <div class="block block-rounded flex-grow-1 d-flex flex-column">
+        {{-- Header --}}
+        <div class="block-header block-header-default">
+            <h3 class="block-title">Statistik Alumni</h3>
+        </div>
+
+        {{-- Bar Chart --}}
+        <div class="block-content block-content-full">
+            <canvas id="barChartAlumni" style="height: 250px; width: 100%;"></canvas>
+        </div>
+
+        {{-- Textual Statistik --}}
+        <div class="block-content bg-body-light">
+            <div class="row items-push text-center w-100">
+            @foreach ([
+                ['label' => 'Bekerja', 'data' => $statistikAlumni['Bekerja'], 'icon' => 'fa-briefcase', 'color' => 'success'],
+                ['label' => 'Belum Bekerja', 'data' => $statistikAlumni['Belum Bekerja'], 'icon' => 'fa-user-times', 'color' => 'danger'],
+                ['label' => 'Wirausaha', 'data' => $statistikAlumni['Wirausaha'], 'icon' => 'fa-store', 'color' => 'warning'],
+            ] as $stat)
+                <div class="col-sm-4">
+                <dl class="mb-0">
+                    <dt class="fs-4 fw-bold text-{{ $stat['color'] }}">
+                    <i class="fa {{ $stat['icon'] }} me-1"></i>
+                    {{ $stat['data']['jumlah'] }} Alumni
+                    </dt>
+                    <dd class="fs-sm fw-medium text-muted mb-0">{{ $stat['label'] }}</dd>
+                    <dd class="fs-xs text-muted">{{ $stat['data']['persen'] }} dari total</dd>
+                </dl>
+                </div>
+            @endforeach
+            </div>
+        </div>
 
         </div>
-        {{-- END Page Content --}}
+    </div>
+    </div>
+    {{-- End Statistik Alumni --}}
+
+
+            </div>
       </main>
 
-      {{-- Footer and Scripts --}}
       @include('components.admin.footer')
     </div>
     @include('components.admin.script')

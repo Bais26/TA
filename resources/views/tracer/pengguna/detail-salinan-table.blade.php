@@ -33,7 +33,7 @@
                             <div class="col-12">
                                 <div class="mb-3">
                                     <label class="form-label text-muted small">Program Studi</label>
-                                    <p class="mb-0 fw-medium">{{ $data->prodi ?? '-' }}</p>
+                                    <p class="mb-0 fw-medium">{{ $data->prodi_name ?? '-' }}</p>
                                 </div>
                             </div>
                             <div class="col-12">

@@ -56,7 +56,7 @@
                                 </li>
                                 <li>
                                     <a class="dropdown-item"
-                                        href="{{ route('tracer.showstudy', Auth::user()->id) }}?tipe=tracer">Tracer
+                                        href="{{ route('tracer.showstudy', auth()->user()->alumni->id) }}?tipe=tracer">Tracer
                                         Study</a>
                                 </li>
                             </ul>

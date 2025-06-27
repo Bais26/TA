@@ -13,17 +13,37 @@ class HomeController extends Controller
 {
     public function index()
     {
+        // Ambil data tahun akademik dari API OASE
+        $response = Http::get('https://api.oase.poltektegal.ac.id/api/web/master/tahun-akademik', [
+            'key' => env('OASE_API_KEY')
+        ]);
+
+        $tahunAkademikList = [];
+        $selectedTA = null;
+
+        if ($response->successful() && isset($response['data'])) {
+            $tahunAkademikList = $response['data'];
+
+            // Ambil tahun akademik aktif
+            $defaultTA = collect($tahunAkademikList)->firstWhere('status', 1);
+
+            // Ambil kode dari input GET, fallback ke tahun aktif
+            $selectedTA = request()->input('tahun_akademik', $defaultTA['kode'] ?? null);
+        }
+
+        // Ambil jumlah dosen berdasarkan tahun akademik yang dipilih
+        $countDosen = $this->getDosenCount($selectedTA);
+
         $user = Auth::user();
 
-        // Data untuk grafik (semua role)
+        // Data untuk grafik
         $tahun = range(2021, 2025);
         $alumniData = $this->getAlumniData($tahun);
         $kuisonerData = $this->getKuisionerData($tahun);
 
-        // Jika admin/superadmin
+        // Jika admin atau superadmin
         if ($user && in_array($user->role, ['admin', 'superadmin'])) {
             $countMahasiswa = $this->getMahasiswaCount();
-            $countDosen = $this->getDosenCount();
             $countAlumni = $this->getAlumniCount();
             $statistikAlumni = $this->getStatistikBekerja();
 
@@ -34,23 +54,20 @@ class HomeController extends Controller
                 'statistikAlumni',
                 'tahun',
                 'alumniData',
-                'kuisonerData'
+                'kuisonerData',
+                'tahunAkademikList',
+                'selectedTA'
             ));
         }
 
-        // Jika alumni
-        $alumni = Alumni::where('id_users', $user->id)->first();
-        $hasFilledTracer = false;
-
-        if ($alumni) {
-            $hasFilledTracer = TracerStudy::where('id_alumni', $alumni->id)->exists();
-        }
-
-        // statusTracer: 'sudah' / 'belum' → dikirim ke Blade
+        // Jika user adalah alumni
+        $alumni = $user->alumni ?? Alumni::where('id_users', $user->id)->first();
+        $hasFilledTracer = $alumni ? TracerStudy::where('id_alumni', $alumni->id)->exists() : false;
         $statusTracer = $hasFilledTracer ? 'sudah' : 'belum';
 
         return view('main', compact('tahun', 'alumniData', 'kuisonerData', 'statusTracer'));
     }
+
 
     private function getMahasiswaCount()
     {
@@ -71,60 +88,54 @@ class HomeController extends Controller
         return $count;
     }
 
-    private function getDosenCount()
+ private function getDosenCount($kodeTA)
     {
         $key = env('OASE_API_KEY');
-        $count = 0;
         $kodeProdi = '09';
-        $tahunAkademikList = ['20201', '20211', '20221', '20231', '20241', '20251'];
 
-        foreach ($tahunAkademikList as $kodeTA) {
-            $res = Http::get('https://api.oase.poltektegal.ac.id/api/web/dosen', [
-                'key' => $key,
-                'kd_prodi' => $kodeProdi,
-                'kode_tahun_akademik' => $kodeTA
-            ]);
+        $res = Http::get('https://api.oase.poltektegal.ac.id/api/web/dosen', [
+            'key' => $key,
+            'kd_prodi' => $kodeProdi,
+            'kode_tahun_akademik' => $kodeTA
+        ]);
 
-            if ($res->successful() && isset($res['data'])) {
-                $count += count($res['data']);
-            }
+        if ($res->successful() && isset($res['data'])) {
+            return count($res['data']);
         }
 
-        return $count;
+        return 0;
     }
+
+
 
     private function getAlumniCount()
     {
-        $key = env('OASE_API_KEY');
-        $count = 0;
-
-        for ($tahun = 2020; $tahun <= 2025; $tahun++) {
-            $res = Http::get('https://api.oase.poltektegal.ac.id/api/web/alumni', [
-                'key' => $key,
-                'tahun_angkatan' => $tahun
-            ]);
-
-            if ($res->successful() && isset($res['data'])) {
-                $count += count($res['data']);
-            }
-        }
-
-        return $count;
+        return DB::table('alumni')->count();
     }
 
     private function getStatistikBekerja()
     {
-        $bekerja = TracerStudy::where('status_kerja', 'aktif')->count();
-        $belum = TracerStudy::where('status_kerja', 'tidak_aktif')->count();
-        $total = $bekerja + $belum;
-    
+        $bekerja = TracerStudy::where('bekerja', 'ya')->count();
+        $belum = TracerStudy::where('bekerja', 'tidak')->count();
+        $wirausaha = TracerStudy::where('bekerja', 'wirausaha')->count();
+
+        $total = $bekerja + $belum + $wirausaha;
+
         return [
-            'Bekerja' => $total ? round(($bekerja / $total) * 100, 1) . '%' : '0%',
-            'Belum Bekerja' => $total ? round(($belum / $total) * 100, 1) . '%' : '0%',
-            'Wirausaha' => 'Tidak tersedia' // ganti jika ada data wirausaha
+            'Bekerja' => [
+                'jumlah' => $bekerja,
+                'persen' => $total ? round(($bekerja / $total) * 100, 1) . '%' : '0%',
+            ],
+            'Belum Bekerja' => [
+                'jumlah' => $belum,
+                'persen' => $total ? round(($belum / $total) * 100, 1) . '%' : '0%',
+            ],
+            'Wirausaha' => [
+                'jumlah' => $wirausaha,
+                'persen' => $total ? round(($wirausaha / $total) * 100, 1) . '%' : '0%',
+            ],
         ];
     }
-    
 
     private function getAlumniData($tahun)
     {

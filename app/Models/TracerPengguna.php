@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class tracer_pengguna extends Model
+class TracerPengguna extends Model
 {
     use HasFactory;
 
@@ -18,7 +18,7 @@ class tracer_pengguna extends Model
         'alamat',
         'prodi',
         'jabatan',
-        
+
         // Survey Kompetensi Lulusan
         'integritas',
         'keahlian',
@@ -27,14 +27,14 @@ class tracer_pengguna extends Model
         'komunikasi',
         'kerja_tim',
         'pengembangan',
-        
+
         // Penilaian Atasan
         'nama_atasan',
         'nip_atasan',
         'posisi_jabatan_atasan',
         'nama_perusahaan',
         'alamat_perusahaan',
-        
+
         // Saran dan Masukan
         'saran'
     ];

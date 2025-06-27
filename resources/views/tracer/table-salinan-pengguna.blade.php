@@ -84,7 +84,7 @@
                                     <td class="d-none d-sm-table-cell">
                                         {{ $item->created_at ? $item->created_at->format('d-m-Y') : '-' }}
                                     </td>
-                                    <td>{{ $item->prodi }}</td>
+                                    <td>{{ $item->prodi_name }}</td>
                                     <td>
                                         @if ($item->created_at)
                                             <span class="badge bg-success">Sudah Mengisi</span>

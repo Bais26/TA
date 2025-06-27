@@ -3,15 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alumni;
-use App\Models\tracer_pengguna;
-use App\Models\User;
+use App\Models\TracerPengguna;
 use Illuminate\Http\Request;
+use PHPUnit\Event\Tracer\Tracer;
 
 class HasilTracerController extends Controller
 {
     public function index()
     {
-        // Mapping string ke angka
         $nilaiMap = [
             'tidak_baik'   => 1,
             'kurang_baik'  => 2,
@@ -20,7 +19,6 @@ class HasilTracerController extends Controller
             'sangat_baik'  => 5,
         ];
 
-        // Indikator
         $indikator = [
             'integritas'   => 'Integritas',
             'keahlian'     => 'Keahlian',
@@ -31,19 +29,16 @@ class HasilTracerController extends Controller
             'pengembangan' => 'Pengembangan Diri'
         ];
 
-        // Statistik alumni
         $totalAlumni   = Alumni::count();
-        $sudahMengisi  = tracer_pengguna::count();
+        $sudahMengisi  = TracerPengguna::count();
         $belumMengisi  = $totalAlumni - $sudahMengisi;
 
-        // Hasil rekap tiap indikator
         $hasil = [];
         foreach ($indikator as $field => $label) {
-            $data = tracer_pengguna::select($field)->get()->pluck($field)->map(function ($v) use ($nilaiMap) {
+            $data = TracerPengguna::select($field)->get()->pluck($field)->map(function ($v) use ($nilaiMap) {
                 return $nilaiMap[strtolower($v)] ?? 0;
             });
 
-            // Rekap jumlah per kategori
             $rekap = [
                 1 => $data->where(fn($v) => $v == 1)->count(),
                 2 => $data->where(fn($v) => $v == 2)->count(),
@@ -56,12 +51,14 @@ class HasilTracerController extends Controller
             $rataRata = $jumlahResponden ? round($data->sum() / $jumlahResponden, 2) : 0;
             $keterangan = $this->getKategoriNilai($rataRata);
 
-            // Tambahan: Nilai total & presentase per indikator
             $totalNilai = 0;
             foreach ($rekap as $nilai => $jumlah) {
                 $totalNilai += $nilai * $jumlah;
             }
-            $presentase = ($jumlahResponden > 0) ? round(($totalNilai / ($jumlahResponden * 5)) * 100, 1) : 0;
+
+            $presentase = ($jumlahResponden > 0)
+                ? round(($totalNilai / ($jumlahResponden * 5)) * 100, 1)
+                : 0;
 
             $hasil[] = [
                 'label' => $label,
@@ -69,24 +66,44 @@ class HasilTracerController extends Controller
                 'jumlah_responden' => $jumlahResponden,
                 'rata_rata' => $rataRata,
                 'keterangan' => $keterangan,
-                'nilai_total' => $presentase, // Tambah ini
+                'nilai_total' => $presentase,
             ];
         }
 
-        // Kesimpulan rata-rata
+        // Kesimpulan
         $totalNilai = 0;
         $totalIndikator = 0;
+        $totalResponden = 0;
         foreach ($hasil as $row) {
             $totalNilai += $row['rata_rata'];
             $totalIndikator++;
+            $totalResponden += $row['jumlah_responden'];
         }
+
         $kesimpulanRataRata = $totalIndikator ? round($totalNilai / $totalIndikator, 2) : 0;
         $kesimpulanKategori = $this->getKategoriNilai($kesimpulanRataRata);
 
-        return view('tracer.hasil', compact('totalAlumni', 'sudahMengisi', 'belumMengisi', 'hasil', 'kesimpulanKategori', 'kesimpulanRataRata'));
+        $nilaiMaksimal = $totalResponden * 5;
+        $totalNilaiSeluruh = 0;
+        foreach ($hasil as $row) {
+            $totalNilaiSeluruh += $row['rata_rata'] * $row['jumlah_responden'];
+        }
+
+        $kesimpulanPersentase = $nilaiMaksimal > 0
+            ? round(($totalNilaiSeluruh / $nilaiMaksimal) * 100, 1)
+            : 0;
+
+        return view('tracer.hasil', compact(
+            'totalAlumni',
+            'sudahMengisi',
+            'belumMengisi',
+            'hasil',
+            'kesimpulanKategori',
+            'kesimpulanRataRata',
+            'kesimpulanPersentase'
+        ));
     }
 
-    // Fungsi keterangan kategori nilai
     private function getKategoriNilai($nilai)
     {
         if ($nilai >= 4.5) return 'Sangat Baik';
