@@ -31,8 +31,7 @@ class HasilTracerController extends Controller
             'pengembangan' => 'Pengembangan Diri'
         ];
 
-
-        // Statistik alumni (asumsi tabel user = semua alumni)
+        // Statistik alumni
         $totalAlumni   = Alumni::count();
         $sudahMengisi  = tracer_pengguna::count();
         $belumMengisi  = $totalAlumni - $sudahMengisi;
@@ -43,16 +42,6 @@ class HasilTracerController extends Controller
             $data = tracer_pengguna::select($field)->get()->pluck($field)->map(function ($v) use ($nilaiMap) {
                 return $nilaiMap[strtolower($v)] ?? 0;
             });
-            // Rekap umum
-            $totalNilai = 0;
-            $totalIndikator = 0;
-            foreach ($hasil as $row) {
-                $totalNilai += $row['rata_rata'];
-                $totalIndikator++;
-            }
-            $kesimpulanRataRata = $totalIndikator ? round($totalNilai / $totalIndikator, 2) : 0;
-            $kesimpulanKategori = $this->getKategoriNilai($kesimpulanRataRata);
-
 
             // Rekap jumlah per kategori
             $rekap = [
@@ -63,9 +52,16 @@ class HasilTracerController extends Controller
                 5 => $data->where(fn($v) => $v == 5)->count(),
             ];
 
-            $jumlahResponden = $data->filter()->count(); // Hindari 0
+            $jumlahResponden = $data->filter()->count();
             $rataRata = $jumlahResponden ? round($data->sum() / $jumlahResponden, 2) : 0;
             $keterangan = $this->getKategoriNilai($rataRata);
+
+            // Tambahan: Nilai total & presentase per indikator
+            $totalNilai = 0;
+            foreach ($rekap as $nilai => $jumlah) {
+                $totalNilai += $nilai * $jumlah;
+            }
+            $presentase = ($jumlahResponden > 0) ? round(($totalNilai / ($jumlahResponden * 5)) * 100, 1) : 0;
 
             $hasil[] = [
                 'label' => $label,
@@ -73,8 +69,19 @@ class HasilTracerController extends Controller
                 'jumlah_responden' => $jumlahResponden,
                 'rata_rata' => $rataRata,
                 'keterangan' => $keterangan,
+                'nilai_total' => $presentase, // Tambah ini
             ];
         }
+
+        // Kesimpulan rata-rata
+        $totalNilai = 0;
+        $totalIndikator = 0;
+        foreach ($hasil as $row) {
+            $totalNilai += $row['rata_rata'];
+            $totalIndikator++;
+        }
+        $kesimpulanRataRata = $totalIndikator ? round($totalNilai / $totalIndikator, 2) : 0;
+        $kesimpulanKategori = $this->getKategoriNilai($kesimpulanRataRata);
 
         return view('tracer.hasil', compact('totalAlumni', 'sudahMengisi', 'belumMengisi', 'hasil', 'kesimpulanKategori', 'kesimpulanRataRata'));
     }
