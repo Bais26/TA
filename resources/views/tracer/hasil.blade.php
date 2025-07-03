@@ -3,15 +3,7 @@
 @section('content')
     <div class="container py-5 px-md-4">
 
-        <!-- Header -->
-        <div class="mb-5 rounded-4 p-4 bg-gradient-primary text-white shadow-lg"
-            style="background: linear-gradient(90deg, #4472c4 0%, #6db3f2 100%);">
-            <h1 class="fw-bold mb-2 display-5 d-flex align-items-center">
-                <i class="bi bi-bar-chart-steps me-3 fs-1"></i>
-                Dashboard Alumni Survey
-            </h1>
-            <p class="lead mb-0 opacity-75">Analisis kompetensi & kinerja alumni</p>
-        </div>
+
 
         <!-- Statistics Cards -->
         <div class="row mb-5 g-4 flex-wrap">
@@ -82,7 +74,8 @@
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover mb-0 align-middle">
+                    <!-- TOMBOL EXPORT OTOMATIS DARI DATATABLES -->
+                    <table class="table table-hover mb-0 align-middle" id="table-hasil-survei">
                         <thead class="bg-gradient-primary text-white"
                             style="background: linear-gradient(90deg,#1e3c72 0,#2a5298 100%)">
                             <tr>
@@ -97,7 +90,7 @@
                                 <th class="border-0 py-3 text-center fw-semibold">Sangat Baik<br><small>(5)</small></th>
                                 <th class="border-0 py-3 text-center fw-semibold">Responden</th>
                                 <th class="border-0 py-3 text-center fw-semibold">Rata-Rata</th>
-                                <th class="border-0 py-3 text-center fw-semibold">Nilai Total</th> {{-- Kolom baru --}}
+                                <th class="border-0 py-3 text-center fw-semibold">Nilai Total</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -133,8 +126,8 @@
                                 </tr>
                             @endforeach
                         </tbody>
-
                     </table>
+                    <!-- END TABLE -->
                 </div>
             </div>
         </div>
@@ -154,7 +147,6 @@
                         dan persentase
                         <span class="badge bg-light text-primary shadow-sm px-2 py-1 fs-6">{{ $kesimpulanPersentase }}%</span>.
                     </p>
-
                 </div>
             </div>
         </div>
@@ -174,11 +166,13 @@
     </div>
 
     <!-- CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css"/>
+
     <style>
         .bg-gradient-primary {
             background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%) !important;
         }
-
         .gradient-card {
             border-radius: 1.6rem;
             transition: transform .22s cubic-bezier(.42, 0, .34, 1.01), box-shadow .22s;
@@ -187,118 +181,58 @@
             transform: scale(.96) translateY(15px);
             animation: cardFadeIn .8s forwards;
         }
-
         @keyframes cardFadeIn {
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+            to { opacity: 1; transform: scale(1) translateY(0);}
         }
-
-        .gradient-card:hover {
-            transform: translateY(-5px) scale(1.028);
-            box-shadow: 0 1.2rem 2.3rem rgba(44, 62, 130, 0.19) !important;
-        }
-
+        .gradient-card:hover {transform: translateY(-5px) scale(1.028);}
         .table thead.bg-gradient-primary th {
             background: linear-gradient(90deg, #2563eb 60%, #a8e0ff 100%) !important;
-            color: #fff !important;
-            border: none;
+            color: #fff !important; border: none;
         }
-
-        .table tbody tr:nth-child(even) {
-            background: #f7fafc;
-        }
-
-        .table tbody tr {
-            border-bottom: 2.2px solid rgba(56, 76, 148, .08);
-        }
-
-        .table tbody tr:hover {
-            background: #eaf4ff !important;
-            transition: background 0.2s;
-        }
-
-        .table td,
-        .table th {
-            vertical-align: middle;
-        }
-
+        .table tbody tr:nth-child(even) {background: #f7fafc;}
+        .table tbody tr {border-bottom: 2.2px solid rgba(56, 76, 148, .08);}
+        .table tbody tr:hover {background: #eaf4ff !important; transition: background 0.2s;}
+        .table td, .table th {vertical-align: middle;}
         .rata-badge {
             background: linear-gradient(100deg, #a5f0e8 0, #2196f3 100%) !important;
-            position: relative;
-            font-weight: bold;
-            box-shadow: 0 1px 6px rgba(30, 80, 200, 0.08);
-            border-radius: 1em;
-            animation: shimmer 2s infinite linear;
-            background-size: 220% 100%;
-            cursor: pointer;
-            border: none !important;
+            position: relative; font-weight: bold; box-shadow: 0 1px 6px rgba(30, 80, 200, 0.08);
+            border-radius: 1em; animation: shimmer 2s infinite linear; background-size: 220% 100%;
+            cursor: pointer; border: none !important;
         }
-
-        .rata-badge:hover {
-            background-position: 100% 0;
-            box-shadow: 0 2px 12px rgba(0, 180, 220, 0.11);
-            filter: brightness(1.04);
-        }
-
-        @keyframes shimmer {
-            0% {
-                background-position: -180px 0;
-            }
-
-            100% {
-                background-position: 220px 0;
-            }
-        }
-
+        .rata-badge:hover {background-position: 100% 0;}
+        @keyframes shimmer {0% {background-position: -180px 0;} 100% {background-position: 220px 0;}}
         .card-header.bg-white {
             background: linear-gradient(90deg, #fafdff 80%, #dbeafe 100%) !important;
-            border-bottom: 1.7px solid #e3e6ef;
-            border-radius: 1.6rem 1.6rem 0 0;
+            border-bottom: 1.7px solid #e3e6ef; border-radius: 1.6rem 1.6rem 0 0;
         }
-
         .alert.bg-gradient-conclusion {
             background: linear-gradient(90deg, #7f7fd5 0%, #91eac9 100%) !important;
-            border-radius: 1.2rem;
-            box-shadow: 0 2px 20px rgba(36, 36, 100, .10);
+            border-radius: 1.2rem; box-shadow: 0 2px 20px rgba(36, 36, 100, .10);
             color: #fff !important;
         }
-
-        .alert .badge {
-            font-size: 1.09em;
-            border-radius: 0.9em;
-        }
-
-        .card.bg-light {
-            border-radius: 1.1rem;
-            background: linear-gradient(95deg, #f4f8fc 80%, #eaf6ff 100%) !important;
-        }
-
-        .display-5,
-        h1.display-5 {
-            letter-spacing: -1.1px;
-        }
-
+        .alert .badge {font-size: 1.09em; border-radius: 0.9em;}
+        .card.bg-light {border-radius: 1.1rem; background: linear-gradient(95deg, #f4f8fc 80%, #eaf6ff 100%) !important;}
+        .display-5, h1.display-5 {letter-spacing: -1.1px;}
         @media (max-width: 768px) {
-            .gradient-card {
-                font-size: .96em;
-            }
-
-            .display-5 {
-                font-size: 2rem;
-            }
-
-            .card-header h4 {
-                font-size: 1.17rem;
-            }
-
-            .alert .fs-5,
-            .alert h6 {
-                font-size: 1rem !important;
-            }
+            .gradient-card {font-size: .96em;}
+            .display-5 {font-size: 2rem;}
+            .card-header h4 {font-size: 1.17rem;}
+            .alert .fs-5, .alert h6 {font-size: 1rem !important;}
         }
+        .dt-buttons .btn {font-weight: 600 !important;}
     </style>
+
+    <!-- DataTables JS & Buttons -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
     <!-- Animated Counter & Bootstrap Tooltip -->
     <script>
@@ -325,12 +259,49 @@
                     return new bootstrap.Tooltip(tooltipTriggerEl)
                 })
             }
-            // Shimmer badge tooltip
             document.querySelectorAll('.rata-badge').forEach(function(el) {
                 el.setAttribute('title', 'Rata-rata hasil survei');
                 if (window.bootstrap) {
                     new bootstrap.Tooltip(el);
                 }
+            });
+
+            // DataTables + Export Button
+            $('#table-hasil-survei').DataTable({
+                paging: false,
+                searching: false,
+                ordering: false,
+                info: false,
+                responsive: true,
+                autoWidth: false,
+                dom: "<'dt-toolbar row mb-3'<'col-12 d-flex align-items-center gap-2'B>>" +
+                     "<'row'<'col-sm-12 table-responsive'tr>>",
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        className: 'btn btn-sm btn-success rounded-pill me-1 mb-1',
+                        text: '<i class="bi bi-file-earmark-excel"></i> Export Excel',
+                        exportOptions: { columns: ':visible' }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        className: 'btn btn-sm btn-danger rounded-pill me-1 mb-1',
+                        text: '<i class="bi bi-file-earmark-pdf"></i> Export PDF',
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+                        exportOptions: { columns: ':visible' },
+                        customize: function (doc) {
+                            doc.styles.tableHeader.alignment = 'center';
+                            doc.defaultStyle.fontSize = 10;
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        className: 'btn btn-sm btn-info rounded-pill mb-1',
+                        text: '<i class="bi bi-printer"></i> Cetak',
+                        exportOptions: { columns: ':visible' }
+                    }
+                ]
             });
         });
     </script>

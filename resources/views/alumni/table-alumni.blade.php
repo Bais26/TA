@@ -221,6 +221,7 @@
                         data: 'no_hp',
                         className: 'd-none d-sm-table-cell'
                     },
+                    
                     {
                         data: null,
                         orderable: false,

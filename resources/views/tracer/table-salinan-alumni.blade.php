@@ -270,11 +270,11 @@
 </li>
 
                                 ${userRole === 'admin' ? `
-                                                <li>
-                                                    <a class="dropdown-item btn-delete" href="#" data-id="${data.id}">
-                                                        <i class="fa fa-trash-alt me-1 text-danger"></i> Hapus
-                                                    </a>
-                                                </li>` : ''}
+                                                    <li>
+                                                        <a class="dropdown-item btn-delete" href="#" data-id="${data.id}">
+                                                            <i class="fa fa-trash-alt me-1 text-danger"></i> Hapus
+                                                        </a>
+                                                    </li>` : ''}
                             </ul>
                         </div>`;
                         }
